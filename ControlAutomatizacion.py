@@ -10,43 +10,44 @@ from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-driver = webdriver.Chrome()
+def test_ordenar_productos_por_precio():
+    driver = webdriver.Chrome()
 
-driver.get("https://www.saucedemo.com/")
-driver.maximize_window()
+    driver.get("https://www.saucedemo.com/")
+    driver.maximize_window()
 
-username_input = driver.find_element(By.ID, "user-name")
-username_input.send_keys("standard_user")
+    username_input = driver.find_element(By.ID, "user-name")
+    username_input.send_keys("standard_user")
 
-password_input = driver.find_element(By.ID, "password")
-password_input.send_keys("secret_sauce")
+    password_input = driver.find_element(By.ID, "password")
+    password_input.send_keys("secret_sauce")
 
-login_button = driver.find_element(By.ID, "login-button")
-login_button.click()
+    login_button = driver.find_element(By.ID, "login-button")
+    login_button.click()
 
-sorting_element = driver.find_element(By.CLASS_NAME, "product_sort_container")
-select = Select(sorting_element)
-select.select_by_value("lohi")
+    sorting_element = driver.find_element(By.CLASS_NAME, "product_sort_container")
+    select = Select(sorting_element)
+    select.select_by_value("lohi")
 
-sorting_element = driver.find_element(By.CLASS_NAME, "product_sort_container")
-select = Select(sorting_element)
+    sorting_element = driver.find_element(By.CLASS_NAME, "product_sort_container")
+    select = Select(sorting_element)
 
-current_selection = select.first_selected_option
-current_selection_value = current_selection.get_attribute("value")
+    current_selection = select.first_selected_option
+    current_selection_value = current_selection.get_attribute("value")
 
-assert current_selection_value == "lohi", f"El valor del filtro esperado era 'lohi' pero se obtuvo {current_selection_value}"
+    assert current_selection_value == "lohi", f"El valor del filtro esperado era 'lohi' pero se obtuvo {current_selection_value}"
 
-prices = driver.find_elements(By.CLASS_NAME, "inventory_item_price")
-price_list = [float(price.text.replace('$', '')) for price in prices]
+    prices = driver.find_elements(By.CLASS_NAME, "inventory_item_price")
+    price_list = [float(price.text.replace('$', '')) for price in prices]
 
-if price_list == sorted(price_list):
-    print("Los productos están ordenados de menor a mayor precio.")
-else:
-    print("Los productos no están ordenados correctamente de menor a mayor.")
+    if price_list == sorted(price_list):
+        print("Los productos están ordenados de menor a mayor precio.")
+    else:
+        print("Los productos no están ordenados correctamente de menor a mayor.")
 
-driver.quit()
+    driver.quit()
 
-print("El test fue realizado")
+    print("El test fue realizado")
 
 #Ejercicio 3
 #CASO 2:
@@ -66,57 +67,59 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 
-driver = webdriver.Chrome()
+def test_agregar_todos_los_productos_al_carrito():
+    driver = webdriver.Chrome()
 
-driver.get("https://www.saucedemo.com/")
-driver.maximize_window()
+    driver.get("https://www.saucedemo.com/")
+    driver.maximize_window()
 
-username_input = driver.find_element(By.ID, "user-name")
-username_input.send_keys("standard_user")
+    username_input = driver.find_element(By.ID, "user-name")
+    username_input.send_keys("standard_user")
 
-password_input = driver.find_element(By.ID, "password")
-password_input.send_keys("secret_sauce")
+    password_input = driver.find_element(By.ID, "password")
+    password_input.send_keys("secret_sauce")
 
-login_button = driver.find_element(By.ID, "login-button")
-login_button.click()
+    login_button = driver.find_element(By.ID, "login-button")
+    login_button.click()
 
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "inventory_item")))
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "inventory_item")))
 
-items = driver.find_elements(By.CLASS_NAME, "btn_inventory")
-for item in items:
-    item.click()
+    items = driver.find_elements(By.CLASS_NAME, "btn_inventory")
+    for item in items:
+        item.click()
 
-cart_button = driver.find_element(By.CLASS_NAME, "shopping_cart_link")
-cart_button.click()
+    cart_button = driver.find_element(By.CLASS_NAME, "shopping_cart_link")
+    cart_button.click()
 
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "cart_item")))
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "cart_item")))
 
-cart_items = driver.find_elements(By.CLASS_NAME, "cart_item")
-assert len(cart_items) == len(items), "No todos los elementos están en el carrito."
+    cart_items = driver.find_elements(By.CLASS_NAME, "cart_item")
+    assert len(cart_items) == len(items), "No todos los elementos están en el carrito."
 
-checkout_button = driver.find_element(By.ID, "checkout")
-checkout_button.click()
+    checkout_button = driver.find_element(By.ID, "checkout")
+    checkout_button.click()
 
-first_name_input = driver.find_element(By.ID, "first-name")
-first_name_input.send_keys("Carina")
-continue_button = driver.find_element(By.CLASS_NAME, "btn_primary")
-continue_button.click()
+    first_name_input = driver.find_element(By.ID, "first-name")
+    first_name_input.send_keys("Carina")
+    continue_button = driver.find_element(By.CLASS_NAME, "btn_primary")
+    continue_button.click()
 
-error_message = driver.find_element(By.CLASS_NAME, "error-message-container")
-errortext = error_message.find_element(By.TAG_NAME, "h3")
-assert errortext.text == "Error: Last Name is required", "El mensaje de error no es el mismo"
+    error_message = driver.find_element(By.CLASS_NAME, "error-message-container")
+    errortext = error_message.find_element(By.TAG_NAME, "h3")
+    assert errortext.text == "Error: Last Name is required", "El mensaje de error no es el mismo"
 
-last_name_input = driver.find_element(By.ID, "last-name")
-last_name_input.send_keys("Saucedo")
-continue_button.click()
+    last_name_input = driver.find_element(By.ID, "last-name")
+    last_name_input.send_keys("Saucedo")
+    continue_button.click()
 
-error_message = driver.find_element(By.CLASS_NAME, "error-message-container")
-errortext = error_message.find_element(By.TAG_NAME, "h3")
-assert errortext.text == "Error: Postal Code is required", "El mensaje de error no es mismo."
+    error_message = driver.find_element(By.CLASS_NAME, "error-message-container")
+    errortext = error_message.find_element(By.TAG_NAME, "h3")
+    assert errortext.text == "Error: Postal Code is required", "El mensaje de error no es el mismo."
 
-driver.quit()
+    driver.quit()
 
-print("Proceso de compra completado con verificación")
+    print("Proceso de compra completado con verificación")
+
 
 #Ejercicio 3
 #CASO 3
