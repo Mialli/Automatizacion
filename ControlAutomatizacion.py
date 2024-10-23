@@ -11,7 +11,9 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 
 def test_ordenar_productos_por_precio():
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless=new")
+    driver = webdriver.Chrome(options=options)
 
     driver.get("https://www.saucedemo.com/")
     driver.maximize_window()
@@ -68,7 +70,9 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 
 def test_agregar_todos_los_productos_al_carrito():
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless=new")
+    driver = webdriver.Chrome(options=options)
 
     driver.get("https://www.saucedemo.com/")
     driver.maximize_window()
@@ -146,7 +150,9 @@ from selenium.webdriver.support import expected_conditions as EC
 
 def test_cart_and_checkout():
     print("Comenzando test...")
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless=new")
+    driver = webdriver.Chrome(options=options)
     driver.get("https://www.saucedemo.com/")
 
 
